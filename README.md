@@ -1,69 +1,43 @@
-# Fake Git Server (Deno)
 
-A minimal **fake Git HTTP server** implemented with Deno.
-This project mimics parts of the Git Smart HTTP protocol, but does **not** implement actual Git functionality.
 
-It is designed for learning, experimentation, and understanding how Git clients interact with servers over HTTP.
+# Fake Git Server
 
----
+A mock Git HTTP server that emulates basic Git endpoints for testing, debugging, and education.
 
-## ✨ Features
-
-* Basic HTTP endpoints that resemble Git Smart HTTP
-* Simulated responses for:
-
-  * `info/refs`
-  * `HEAD`
-  * `refs`
-  * `objects`
-  * `git-upload-pack`
-* Lightweight and runs entirely on Deno
-* No external dependencies
+This project does **not implement real Git functionality**.
+It only simulates Git protocol responses over HTTP.
 
 ---
 
 ## ⚠️ Disclaimer
 
-This is **not a real Git server**.
+This server is **not a real Git repository host**.
 
-* No actual repository data is stored
-* No real Git objects are served
-* `git clone` and `git fetch` will **not work properly**
-* Responses are hardcoded or fake
+* `git clone` will NOT work in a real-world sense
+* Responses are faked and non-functional
+* Packfiles and object storage are not implemented
 
-This project is purely for:
-
-* Learning Git protocol basics
-* Testing HTTP interactions
-* Having fun building low-level systems
+If you try to use it like real Git, it will confidently lie to you.
 
 ---
 
-## 🚀 Getting Started
+## Features
 
-### 1. Install Deno
+* Fake Git Smart HTTP endpoints
+* Minimal Git-like response structure
+* Useful for:
 
-```sh
-curl -fsSL https://deno.land/install.sh | sh
-```
-
-### 2. Run the server
-
-```sh
-deno run --allow-net index.ts
-```
-
-The server will start on the default port (usually `http://localhost:8000`).
+  * Protocol testing
+  * Proxy debugging
+  * Learning Git internals (in a “what not to do” way)
 
 ---
 
-## 📡 Available Endpoints
+## Endpoints
 
-### `GET /user/repo.git/info/refs?service=git-upload-pack`
+### `GET /user/repo.git/info/refs`
 
-Returns a fake service advertisement.
-
----
+Returns fake service advertisement.
 
 ### `GET /user/repo.git/HEAD`
 
@@ -73,77 +47,90 @@ Returns:
 ref: refs/heads/main
 ```
 
----
-
 ### `GET /user/repo.git/refs/*`
 
-Returns a fake commit hash:
-
-```
-deadbeefdeadbeefdeadbeef
-```
-
----
+Returns dummy commit hash.
 
 ### `GET /user/repo.git/objects/*`
 
-Returns placeholder object data:
-
-```
-fake-object
-```
-
----
+Returns fake object payload.
 
 ### `POST /user/repo.git/git-upload-pack`
 
-Returns a fake upload-pack response:
+Returns mocked upload-pack response.
+
+---
+
+## 🚀 Usage
+
+### Start server
+
+```bash
+node server.js
+```
+
+Server runs on:
 
 ```
-0008NAK
-0032fake-pack-response
-0000
+http://localhost:8000
 ```
 
 ---
 
-## 🧠 How It Works
+## 🧪 “Clone” Example (DOES NOT ACTUALLY WORK)
 
-The server uses `Deno.serve()` to handle HTTP requests and manually routes paths.
+You can try to fool Git into thinking this is a real server:
 
-It mimics Git behavior by:
+```bash
+git clone http://localhost:8000/user/repo.git
+```
 
-* Parsing URL paths
-* Returning protocol-like responses
-* Setting Git-specific content types
+### Expected reality:
 
-However, it does **not**:
+* Git will attempt communication
+* Server will respond with mock data
+* Clone will likely fail, hang, or produce nonsense
+* Nothing meaningful will be checked out
 
-* Parse real Git data
-* Generate packfiles
-* Maintain repository state
+### Expected illusion:
 
----
-
-## 🛠️ Future Ideas
-
-If you want to turn this into a real Git server:
-
-* Read actual `.git` directories
-* Implement pkt-line encoding properly
-* Serve real refs and objects
-* Implement `git-upload-pack` negotiation
-* Generate packfiles dynamically
+* Git thinks something is happening
+* You briefly feel powerful
+* Then reality resumes
 
 ---
 
-## 📄 License
+## Why this exists
+
+Because sometimes you don’t want a real Git server.
+
+You want:
+
+* predictable responses
+* controlled failures
+* protocol-shaped lies
+
+---
+
+## Limitations
+
+* No real repository storage
+* No commit history
+* No branches
+* No diff
+* No authentication
+* No actual Git compatibility
+
+---
+
+## License
 
 MIT
 
 ---
 
-## 🙃 Why?
+## Final note
 
-Because sometimes you want to understand a complex protocol
-by building a terrible version of it first.
+This project does not replace Git.
+
+It just convincingly impersonates it for short periods of time, which is honestly a skill some humans also specialize in.
